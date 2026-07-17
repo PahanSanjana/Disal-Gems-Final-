@@ -276,6 +276,28 @@ function CheckoutPage() {
                   </div>
                 </dl>
 
+                <div className="mt-6 border-t border-border pt-6">
+                  <p className="eyebrow">Bank Transfer Details</p>
+                  <dl className="mt-3 space-y-1.5 text-sm">
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-muted-foreground">Account No.</dt>
+                      <dd className="font-mono tracking-wide">030-13862992-001</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-muted-foreground">Name</dt>
+                      <dd className="text-right">Disal Ceylon Gem &amp; Jewellery</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-muted-foreground">Bank</dt>
+                      <dd>Saylan Bank</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-muted-foreground">Branch</dt>
+                      <dd>Kaluthara, Sri Lanka</dd>
+                    </div>
+                  </dl>
+                </div>
+
                 <button
                   type="submit"
                   disabled={!canSubmit}
