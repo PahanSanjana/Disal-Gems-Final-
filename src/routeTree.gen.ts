@@ -21,7 +21,15 @@ import { Route as AppointmentRouteImport } from './routes/appointment'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
+import { Route as AdminSeedRouteImport } from './routes/admin.seed'
+import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminJewelryRouteImport } from './routes/admin.jewelry'
+import { Route as AdminGemstonesRouteImport } from './routes/admin.gemstones'
+import { Route as AdminBootstrapRouteImport } from './routes/admin.bootstrap'
+import { Route as AdminAppointmentsRouteImport } from './routes/admin.appointments'
 
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
@@ -83,9 +91,49 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductIdRoute = ProductIdRouteImport.update({
   id: '/product/$id',
   path: '/product/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSeedRoute = AdminSeedRouteImport.update({
+  id: '/admin/seed',
+  path: '/admin/seed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminOrdersRoute = AdminOrdersRouteImport.update({
+  id: '/admin/orders',
+  path: '/admin/orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminJewelryRoute = AdminJewelryRouteImport.update({
+  id: '/admin/jewelry',
+  path: '/admin/jewelry',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminGemstonesRoute = AdminGemstonesRouteImport.update({
+  id: '/admin/gemstones',
+  path: '/admin/gemstones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBootstrapRoute = AdminBootstrapRouteImport.update({
+  id: '/admin/bootstrap',
+  path: '/admin/bootstrap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAppointmentsRoute = AdminAppointmentsRouteImport.update({
+  id: '/admin/appointments',
+  path: '/admin/appointments',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -102,7 +150,15 @@ export interface FileRoutesByFullPath {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/appointments': typeof AdminAppointmentsRoute
+  '/admin/bootstrap': typeof AdminBootstrapRoute
+  '/admin/gemstones': typeof AdminGemstonesRoute
+  '/admin/jewelry': typeof AdminJewelryRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/seed': typeof AdminSeedRoute
   '/product/$id': typeof ProductIdRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -117,7 +173,15 @@ export interface FileRoutesByTo {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/appointments': typeof AdminAppointmentsRoute
+  '/admin/bootstrap': typeof AdminBootstrapRoute
+  '/admin/gemstones': typeof AdminGemstonesRoute
+  '/admin/jewelry': typeof AdminJewelryRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/seed': typeof AdminSeedRoute
   '/product/$id': typeof ProductIdRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -133,7 +197,15 @@ export interface FileRoutesById {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/appointments': typeof AdminAppointmentsRoute
+  '/admin/bootstrap': typeof AdminBootstrapRoute
+  '/admin/gemstones': typeof AdminGemstonesRoute
+  '/admin/jewelry': typeof AdminJewelryRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/seed': typeof AdminSeedRoute
   '/product/$id': typeof ProductIdRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -150,7 +222,15 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
+    | '/admin/appointments'
+    | '/admin/bootstrap'
+    | '/admin/gemstones'
+    | '/admin/jewelry'
+    | '/admin/login'
+    | '/admin/orders'
+    | '/admin/seed'
     | '/product/$id'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -165,7 +245,15 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
+    | '/admin/appointments'
+    | '/admin/bootstrap'
+    | '/admin/gemstones'
+    | '/admin/jewelry'
+    | '/admin/login'
+    | '/admin/orders'
+    | '/admin/seed'
     | '/product/$id'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -180,7 +268,15 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
+    | '/admin/appointments'
+    | '/admin/bootstrap'
+    | '/admin/gemstones'
+    | '/admin/jewelry'
+    | '/admin/login'
+    | '/admin/orders'
+    | '/admin/seed'
     | '/product/$id'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -196,7 +292,15 @@ export interface RootRouteChildren {
   GemstonesRoute: typeof GemstonesRoute
   JewelryRoute: typeof JewelryRoute
   WishlistRoute: typeof WishlistRoute
+  AdminAppointmentsRoute: typeof AdminAppointmentsRoute
+  AdminBootstrapRoute: typeof AdminBootstrapRoute
+  AdminGemstonesRoute: typeof AdminGemstonesRoute
+  AdminJewelryRoute: typeof AdminJewelryRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminOrdersRoute: typeof AdminOrdersRoute
+  AdminSeedRoute: typeof AdminSeedRoute
   ProductIdRoute: typeof ProductIdRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -285,11 +389,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/product/$id': {
       id: '/product/$id'
       path: '/product/$id'
       fullPath: '/product/$id'
       preLoaderRoute: typeof ProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/seed': {
+      id: '/admin/seed'
+      path: '/admin/seed'
+      fullPath: '/admin/seed'
+      preLoaderRoute: typeof AdminSeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/orders': {
+      id: '/admin/orders'
+      path: '/admin/orders'
+      fullPath: '/admin/orders'
+      preLoaderRoute: typeof AdminOrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/jewelry': {
+      id: '/admin/jewelry'
+      path: '/admin/jewelry'
+      fullPath: '/admin/jewelry'
+      preLoaderRoute: typeof AdminJewelryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/gemstones': {
+      id: '/admin/gemstones'
+      path: '/admin/gemstones'
+      fullPath: '/admin/gemstones'
+      preLoaderRoute: typeof AdminGemstonesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/bootstrap': {
+      id: '/admin/bootstrap'
+      path: '/admin/bootstrap'
+      fullPath: '/admin/bootstrap'
+      preLoaderRoute: typeof AdminBootstrapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/appointments': {
+      id: '/admin/appointments'
+      path: '/admin/appointments'
+      fullPath: '/admin/appointments'
+      preLoaderRoute: typeof AdminAppointmentsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -308,7 +468,15 @@ const rootRouteChildren: RootRouteChildren = {
   GemstonesRoute: GemstonesRoute,
   JewelryRoute: JewelryRoute,
   WishlistRoute: WishlistRoute,
+  AdminAppointmentsRoute: AdminAppointmentsRoute,
+  AdminBootstrapRoute: AdminBootstrapRoute,
+  AdminGemstonesRoute: AdminGemstonesRoute,
+  AdminJewelryRoute: AdminJewelryRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminOrdersRoute: AdminOrdersRoute,
+  AdminSeedRoute: AdminSeedRoute,
   ProductIdRoute: ProductIdRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

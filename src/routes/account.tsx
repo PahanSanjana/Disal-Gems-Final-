@@ -1,5 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from "firebase/auth";
+import { getFirebaseAuth } from "@/lib/firebase";
 import { Navbar } from "@/components/luxury/Navbar";
 import { Footer } from "@/components/luxury/Footer";
 import { useAuth, type Profile } from "@/lib/auth-context";
@@ -115,6 +121,10 @@ function AccountPage() {
             </Link>
           </div>
         </form>
+
+        <div className="mt-16 border-t border-border pt-10">
+          <ChangePasswordSection />
+        </div>
       </section>
       <Footer />
     </div>
@@ -153,5 +163,100 @@ function Field({
         className="mt-2 w-full border-b border-border bg-transparent py-2 text-sm focus:border-accent focus:outline-none"
       />
     </label>
+  );
+}
+
+function ChangePasswordSection() {
+  const [current, setCurrent] = useState("");
+  const [next, setNext] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setMsg(null);
+    if (next.length < 6) {
+      setMsg({ ok: false, text: "New password must be at least 6 characters." });
+      return;
+    }
+    if (next !== confirm) {
+      setMsg({ ok: false, text: "Passwords do not match." });
+      return;
+    }
+    setBusy(true);
+    try {
+      const auth = getFirebaseAuth();
+      const u = auth?.currentUser;
+      if (!auth || !u || !u.email) throw new Error("Not signed in.");
+      const cred = EmailAuthProvider.credential(u.email, current);
+      await reauthenticateWithCredential(u, cred);
+      await updatePassword(u, next);
+      setMsg({ ok: true, text: "Password updated." });
+      setCurrent("");
+      setNext("");
+      setConfirm("");
+    } catch (e: any) {
+      setMsg({ ok: false, text: e?.message ?? "Failed to update password." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <form onSubmit={submit}>
+      <p className="eyebrow">Security</p>
+      <h2 className="mt-2 font-display text-2xl">Change password</h2>
+      <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-5">
+        <label className="col-span-2 sm:col-span-1 block">
+          <span className="eyebrow">Current password</span>
+          <input
+            type="password"
+            required
+            value={current}
+            onChange={(e) => setCurrent(e.target.value)}
+            className="mt-2 w-full border-b border-border bg-transparent py-2 text-sm focus:border-accent focus:outline-none"
+          />
+        </label>
+        <label className="col-span-2 sm:col-span-1 block">
+          <span className="eyebrow">New password</span>
+          <input
+            type="password"
+            required
+            minLength={6}
+            value={next}
+            onChange={(e) => setNext(e.target.value)}
+            className="mt-2 w-full border-b border-border bg-transparent py-2 text-sm focus:border-accent focus:outline-none"
+          />
+        </label>
+        <label className="col-span-2 sm:col-span-1 block">
+          <span className="eyebrow">Confirm new password</span>
+          <input
+            type="password"
+            required
+            minLength={6}
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            className="mt-2 w-full border-b border-border bg-transparent py-2 text-sm focus:border-accent focus:outline-none"
+          />
+        </label>
+      </div>
+      {msg && (
+        <p
+          className={`mt-4 text-[11px] uppercase tracking-[0.22em] ${
+            msg.ok ? "text-accent" : "text-destructive"
+          }`}
+        >
+          {msg.text}
+        </p>
+      )}
+      <button
+        type="submit"
+        disabled={busy}
+        className="mt-6 bg-onyx px-8 py-4 text-[11px] uppercase tracking-[0.28em] text-ivory hover:bg-onyx/90 disabled:opacity-50"
+      >
+        {busy ? "Updating…" : "Update password"}
+      </button>
+    </form>
   );
 }
