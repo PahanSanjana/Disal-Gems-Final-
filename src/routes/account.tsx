@@ -115,6 +115,10 @@ function AccountPage() {
             </Link>
           </div>
         </form>
+
+        <div className="mt-16 border-t border-border pt-10">
+          <ChangePasswordSection />
+        </div>
       </section>
       <Footer />
     </div>
