@@ -1,5 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from "firebase/auth";
+import { getFirebaseAuth } from "@/lib/firebase";
 import { Navbar } from "@/components/luxury/Navbar";
 import { Footer } from "@/components/luxury/Footer";
 import { useAuth, type Profile } from "@/lib/auth-context";
