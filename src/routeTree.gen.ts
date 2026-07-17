@@ -21,7 +21,10 @@ import { Route as AppointmentRouteImport } from './routes/appointment'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminBootstrapRouteImport } from './routes/admin.bootstrap'
 
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
@@ -83,9 +86,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductIdRoute = ProductIdRouteImport.update({
   id: '/product/$id',
   path: '/product/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBootstrapRoute = AdminBootstrapRouteImport.update({
+  id: '/admin/bootstrap',
+  path: '/admin/bootstrap',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -102,7 +120,10 @@ export interface FileRoutesByFullPath {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/bootstrap': typeof AdminBootstrapRoute
+  '/admin/login': typeof AdminLoginRoute
   '/product/$id': typeof ProductIdRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -117,7 +138,10 @@ export interface FileRoutesByTo {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/bootstrap': typeof AdminBootstrapRoute
+  '/admin/login': typeof AdminLoginRoute
   '/product/$id': typeof ProductIdRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -133,7 +157,10 @@ export interface FileRoutesById {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/bootstrap': typeof AdminBootstrapRoute
+  '/admin/login': typeof AdminLoginRoute
   '/product/$id': typeof ProductIdRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -150,7 +177,10 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
+    | '/admin/bootstrap'
+    | '/admin/login'
     | '/product/$id'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -165,7 +195,10 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
+    | '/admin/bootstrap'
+    | '/admin/login'
     | '/product/$id'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -180,7 +213,10 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
+    | '/admin/bootstrap'
+    | '/admin/login'
     | '/product/$id'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -196,7 +232,10 @@ export interface RootRouteChildren {
   GemstonesRoute: typeof GemstonesRoute
   JewelryRoute: typeof JewelryRoute
   WishlistRoute: typeof WishlistRoute
+  AdminBootstrapRoute: typeof AdminBootstrapRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   ProductIdRoute: typeof ProductIdRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -285,11 +324,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/product/$id': {
       id: '/product/$id'
       path: '/product/$id'
       fullPath: '/product/$id'
       preLoaderRoute: typeof ProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/bootstrap': {
+      id: '/admin/bootstrap'
+      path: '/admin/bootstrap'
+      fullPath: '/admin/bootstrap'
+      preLoaderRoute: typeof AdminBootstrapRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -308,7 +368,10 @@ const rootRouteChildren: RootRouteChildren = {
   GemstonesRoute: GemstonesRoute,
   JewelryRoute: JewelryRoute,
   WishlistRoute: WishlistRoute,
+  AdminBootstrapRoute: AdminBootstrapRoute,
+  AdminLoginRoute: AdminLoginRoute,
   ProductIdRoute: ProductIdRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

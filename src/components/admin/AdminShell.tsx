@@ -14,14 +14,14 @@ import { useState } from "react";
 import { useIsAdmin } from "@/lib/admin-context";
 import { useAuth } from "@/lib/auth-context";
 
-const NAV = [
+const NAV: { to: string; label: string; icon: any; exact?: boolean }[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/gemstones", label: "Gemstones", icon: Gem },
   { to: "/admin/jewelry", label: "Jewelry", icon: Sparkles },
   { to: "/admin/orders", label: "Orders", icon: ShoppingBag },
   { to: "/admin/appointments", label: "Appointments", icon: CalendarClock },
   { to: "/admin/seed", label: "Seed Data", icon: UploadCloud },
-] as const;
+];
 
 export function AdminGate({ children }: { children: ReactNode }) {
   const { isAdmin, loading } = useIsAdmin();
