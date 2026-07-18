@@ -27,9 +27,8 @@ import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminJewelryRouteImport } from './routes/admin.jewelry'
 import { Route as AdminGemstonesRouteImport } from './routes/admin.gemstones'
-import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
-import { Route as AdminContactsRouteImport } from './routes/admin.contacts'
 import { Route as AdminBootstrapRouteImport } from './routes/admin.bootstrap'
+import { Route as AdminAppointmentsRouteImport } from './routes/admin.appointments'
 
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
@@ -121,19 +120,14 @@ const AdminGemstonesRoute = AdminGemstonesRouteImport.update({
   path: '/admin/gemstones',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminCustomersRoute = AdminCustomersRouteImport.update({
-  id: '/admin/customers',
-  path: '/admin/customers',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminContactsRoute = AdminContactsRouteImport.update({
-  id: '/admin/contacts',
-  path: '/admin/contacts',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminBootstrapRoute = AdminBootstrapRouteImport.update({
   id: '/admin/bootstrap',
   path: '/admin/bootstrap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAppointmentsRoute = AdminAppointmentsRouteImport.update({
+  id: '/admin/appointments',
+  path: '/admin/appointments',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -150,9 +144,8 @@ export interface FileRoutesByFullPath {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/appointments': typeof AdminAppointmentsRoute
   '/admin/bootstrap': typeof AdminBootstrapRoute
-  '/admin/contacts': typeof AdminContactsRoute
-  '/admin/customers': typeof AdminCustomersRoute
   '/admin/gemstones': typeof AdminGemstonesRoute
   '/admin/jewelry': typeof AdminJewelryRoute
   '/admin/login': typeof AdminLoginRoute
@@ -173,9 +166,8 @@ export interface FileRoutesByTo {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/appointments': typeof AdminAppointmentsRoute
   '/admin/bootstrap': typeof AdminBootstrapRoute
-  '/admin/contacts': typeof AdminContactsRoute
-  '/admin/customers': typeof AdminCustomersRoute
   '/admin/gemstones': typeof AdminGemstonesRoute
   '/admin/jewelry': typeof AdminJewelryRoute
   '/admin/login': typeof AdminLoginRoute
@@ -197,9 +189,8 @@ export interface FileRoutesById {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/appointments': typeof AdminAppointmentsRoute
   '/admin/bootstrap': typeof AdminBootstrapRoute
-  '/admin/contacts': typeof AdminContactsRoute
-  '/admin/customers': typeof AdminCustomersRoute
   '/admin/gemstones': typeof AdminGemstonesRoute
   '/admin/jewelry': typeof AdminJewelryRoute
   '/admin/login': typeof AdminLoginRoute
@@ -222,9 +213,8 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
+    | '/admin/appointments'
     | '/admin/bootstrap'
-    | '/admin/contacts'
-    | '/admin/customers'
     | '/admin/gemstones'
     | '/admin/jewelry'
     | '/admin/login'
@@ -245,9 +235,8 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
+    | '/admin/appointments'
     | '/admin/bootstrap'
-    | '/admin/contacts'
-    | '/admin/customers'
     | '/admin/gemstones'
     | '/admin/jewelry'
     | '/admin/login'
@@ -268,9 +257,8 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
+    | '/admin/appointments'
     | '/admin/bootstrap'
-    | '/admin/contacts'
-    | '/admin/customers'
     | '/admin/gemstones'
     | '/admin/jewelry'
     | '/admin/login'
@@ -292,9 +280,8 @@ export interface RootRouteChildren {
   GemstonesRoute: typeof GemstonesRoute
   JewelryRoute: typeof JewelryRoute
   WishlistRoute: typeof WishlistRoute
+  AdminAppointmentsRoute: typeof AdminAppointmentsRoute
   AdminBootstrapRoute: typeof AdminBootstrapRoute
-  AdminContactsRoute: typeof AdminContactsRoute
-  AdminCustomersRoute: typeof AdminCustomersRoute
   AdminGemstonesRoute: typeof AdminGemstonesRoute
   AdminJewelryRoute: typeof AdminJewelryRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -431,25 +418,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGemstonesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/customers': {
-      id: '/admin/customers'
-      path: '/admin/customers'
-      fullPath: '/admin/customers'
-      preLoaderRoute: typeof AdminCustomersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/contacts': {
-      id: '/admin/contacts'
-      path: '/admin/contacts'
-      fullPath: '/admin/contacts'
-      preLoaderRoute: typeof AdminContactsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/bootstrap': {
       id: '/admin/bootstrap'
       path: '/admin/bootstrap'
       fullPath: '/admin/bootstrap'
       preLoaderRoute: typeof AdminBootstrapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/appointments': {
+      id: '/admin/appointments'
+      path: '/admin/appointments'
+      fullPath: '/admin/appointments'
+      preLoaderRoute: typeof AdminAppointmentsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -468,9 +448,8 @@ const rootRouteChildren: RootRouteChildren = {
   GemstonesRoute: GemstonesRoute,
   JewelryRoute: JewelryRoute,
   WishlistRoute: WishlistRoute,
+  AdminAppointmentsRoute: AdminAppointmentsRoute,
   AdminBootstrapRoute: AdminBootstrapRoute,
-  AdminContactsRoute: AdminContactsRoute,
-  AdminCustomersRoute: AdminCustomersRoute,
   AdminGemstonesRoute: AdminGemstonesRoute,
   AdminJewelryRoute: AdminJewelryRoute,
   AdminLoginRoute: AdminLoginRoute,

@@ -4,37 +4,38 @@ import { Search } from "lucide-react";
 import { AdminGate } from "@/components/admin/AdminShell";
 import { subscribeCollection, updateItem } from "@/lib/firestore-products";
 
-const STATUSES = ["Pending", "Confirmed", "Processing", "Completed", "Cancelled"] as const;
+const STATUSES = ["Pending", "Confirmed", "Completed", "Cancelled"] as const;
 type Status = (typeof STATUSES)[number];
 
-type Order = {
+type Appt = {
   id: string;
-  orderId?: string;
   name?: string;
   customerName?: string;
   email?: string;
   phone?: string;
-  items?: any[];
-  total?: number;
+  preferredDate?: string;
+  preferredTime?: string;
+  consultationType?: string;
+  message?: string;
   status?: Status;
   createdAt?: any;
 };
 
-export const Route = createFileRoute("/admin/orders")({
-  head: () => ({ meta: [{ title: "Orders — Admin" }] }),
+export const Route = createFileRoute("/admin/appointments")({
+  head: () => ({ meta: [{ title: "Appointments — Admin" }] }),
   component: () => (
     <AdminGate>
-      <OrdersPage />
+      <AppointmentsPage />
     </AdminGate>
   ),
 });
 
-function OrdersPage() {
-  const [items, setItems] = useState<Order[]>([]);
+function AppointmentsPage() {
+  const [items, setItems] = useState<Appt[]>([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<Status | "All">("All");
 
-  useEffect(() => subscribeCollection<Order>("orders", setItems), []);
+  useEffect(() => subscribeCollection<Appt>("appointments", setItems), []);
 
   const filtered = useMemo(() => {
     const s = search.toLowerCase();
@@ -42,23 +43,23 @@ function OrdersPage() {
       if (filter !== "All" && (i.status || "Pending") !== filter) return false;
       if (!s) return true;
       return (
-        i.orderId?.toLowerCase().includes(s) ||
         (i.name || i.customerName)?.toLowerCase().includes(s) ||
         i.email?.toLowerCase().includes(s) ||
-        i.phone?.toLowerCase().includes(s)
+        i.phone?.toLowerCase().includes(s) ||
+        i.consultationType?.toLowerCase().includes(s)
       );
     });
   }, [items, search, filter]);
 
   async function changeStatus(id: string, status: Status) {
-    await updateItem("orders", id, { status });
+    await updateItem("appointments", id, { status });
   }
 
   return (
     <div>
       <div className="border-b border-border pb-6">
-        <p className="eyebrow">Concierge</p>
-        <h1 className="mt-2 font-display text-4xl">Orders</h1>
+        <p className="eyebrow">Bookings</p>
+        <h1 className="mt-2 font-display text-4xl">Appointments</h1>
       </div>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -68,7 +69,7 @@ function OrdersPage() {
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by ID, name, email…"
+            placeholder="Search by name, email, type…"
             className="w-full border border-border bg-transparent pl-10 pr-4 py-2.5 text-sm focus:border-accent focus:outline-none"
           />
         </div>
@@ -91,12 +92,12 @@ function OrdersPage() {
         <table className="w-full text-sm">
           <thead className="border-b border-border">
             <tr className="text-left">
-              <Th>Order ID</Th>
+              <Th>Ref.</Th>
               <Th>Customer</Th>
               <Th>Contact</Th>
-              <Th>Items</Th>
-              <Th>Total</Th>
-              <Th>Date</Th>
+              <Th>Date · Time</Th>
+              <Th>Type</Th>
+              <Th>Message</Th>
               <Th>Status</Th>
             </tr>
           </thead>
@@ -104,28 +105,32 @@ function OrdersPage() {
             {filtered.length === 0 ? (
               <tr>
                 <td colSpan={7} className="p-8 text-center text-muted-foreground">
-                  No orders match.
+                  No appointments match.
                 </td>
               </tr>
             ) : (
-              filtered.map((o) => (
-                <tr key={o.id} className="border-b border-border/60 align-top">
-                  <td className="p-3 font-mono text-xs">{o.orderId || o.id.slice(0, 8)}</td>
-                  <td className="p-3 font-display">{o.name || o.customerName || "—"}</td>
+              filtered.map((a) => (
+                <tr key={a.id} className="border-b border-border/60 align-top">
+                  <td className="p-3 font-mono text-xs">{a.id.slice(0, 8)}</td>
+                  <td className="p-3 font-display">{a.name || a.customerName || "—"}</td>
                   <td className="p-3 text-muted-foreground text-xs">
-                    {o.email}
+                    {a.email}
                     <br />
-                    {o.phone}
+                    {a.phone}
                   </td>
-                  <td className="p-3 text-muted-foreground">{o.items?.length ?? 0}</td>
-                  <td className="p-3">${(o.total ?? 0).toLocaleString()}</td>
-                  <td className="p-3 text-muted-foreground text-xs">
-                    {o.createdAt?.toDate?.().toLocaleDateString?.() ?? "—"}
+                  <td className="p-3 text-xs">
+                    {a.preferredDate}
+                    <br />
+                    <span className="text-muted-foreground">{a.preferredTime}</span>
+                  </td>
+                  <td className="p-3 text-muted-foreground">{a.consultationType}</td>
+                  <td className="p-3 text-xs max-w-xs truncate" title={a.message}>
+                    {a.message}
                   </td>
                   <td className="p-3">
                     <select
-                      value={o.status || "Pending"}
-                      onChange={(e) => changeStatus(o.id, e.target.value as Status)}
+                      value={a.status || "Pending"}
+                      onChange={(e) => changeStatus(a.id, e.target.value as Status)}
                       className="border border-border bg-transparent px-2 py-1.5 text-xs focus:border-accent focus:outline-none"
                     >
                       {STATUSES.map((s) => (

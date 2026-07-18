@@ -18,37 +18,34 @@ function Dashboard() {
     gemstones: 0,
     jewelry: 0,
     orders: 0,
-    customers: 0,
-    contacts: 0,
+    appointments: 0,
   });
   const [recentOrders, setRecentOrders] = useState<any[]>([]);
-  const [recentContacts, setRecentContacts] = useState<any[]>([]);
+  const [recentAppointments, setRecentAppointments] = useState<any[]>([]);
 
   useEffect(() => {
     const db = getFirebaseDb();
     if (!db) return;
     (async () => {
-      const [g, j, o, u, c] = await Promise.all([
+      const [g, j, o, a] = await Promise.all([
         getDocs(collection(db, "gemstones")),
         getDocs(collection(db, "jewelry")),
         getDocs(collection(db, "orders")),
-        getDocs(collection(db, "users")),
-        getDocs(collection(db, "contacts")),
+        getDocs(collection(db, "appointments")),
       ]);
       setCounts({
         gemstones: g.size,
         jewelry: j.size,
         orders: o.size,
-        customers: u.size,
-        contacts: c.size,
+        appointments: a.size,
       });
       try {
         const ro = await getDocs(query(collection(db, "orders"), orderBy("createdAt", "desc"), limit(5)));
         setRecentOrders(ro.docs.map((d) => ({ id: d.id, ...d.data() })));
       } catch {}
       try {
-        const rc = await getDocs(query(collection(db, "contacts"), orderBy("createdAt", "desc"), limit(5)));
-        setRecentContacts(rc.docs.map((d) => ({ id: d.id, ...d.data() })));
+        const ra = await getDocs(query(collection(db, "appointments"), orderBy("createdAt", "desc"), limit(5)));
+        setRecentAppointments(ra.docs.map((d) => ({ id: d.id, ...d.data() })));
       } catch {}
     })();
   }, []);
@@ -57,8 +54,7 @@ function Dashboard() {
     { label: "Total Gemstones", value: counts.gemstones, to: "/admin/gemstones" },
     { label: "Total Jewelry", value: counts.jewelry, to: "/admin/jewelry" },
     { label: "Total Orders", value: counts.orders, to: "/admin/orders" },
-    { label: "Customers", value: counts.customers, to: "/admin/customers" },
-    { label: "Contact Messages", value: counts.contacts, to: "/admin/contacts" },
+    { label: "Total Appointments", value: counts.appointments, to: "/admin/appointments" },
   ];
 
   return (
@@ -66,7 +62,7 @@ function Dashboard() {
       <p className="eyebrow">Overview</p>
       <h1 className="mt-3 font-display text-4xl md:text-5xl">Dashboard</h1>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (
           <Link
             key={c.label}
@@ -86,22 +82,22 @@ function Dashboard() {
           empty="No orders yet."
           render={(r) => (
             <>
-              <p className="font-display text-lg">{r.customerName || r.name || "—"}</p>
+              <p className="font-display text-lg">{r.name || r.customerName || "—"}</p>
               <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                {r.orderId || r.id.slice(0, 8)} · {r.status || "Pending"}
+                {r.status || "pending"}
               </p>
             </>
           )}
         />
         <RecentList
-          title="Recent Contact Messages"
-          rows={recentContacts}
-          empty="No messages yet."
+          title="Recent Appointments"
+          rows={recentAppointments}
+          empty="No appointments yet."
           render={(r) => (
             <>
-              <p className="font-display text-lg">{r.name || "—"}</p>
+              <p className="font-display text-lg">{r.name || r.customerName || "—"}</p>
               <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                {r.subject || r.email || "—"}
+                {r.preferredDate || r.date || "—"} · {r.status || "pending"}
               </p>
             </>
           )}
