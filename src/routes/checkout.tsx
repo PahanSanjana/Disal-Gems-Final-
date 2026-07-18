@@ -1,12 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowUpRight, MessageCircle, Check, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, MessageCircle, Check, ShieldCheck, Loader2 } from "lucide-react";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { toast } from "sonner";
 import { Navbar } from "@/components/luxury/Navbar";
 import { Footer } from "@/components/luxury/Footer";
 import { useCart } from "@/lib/store";
 import { formatPrice } from "@/lib/products";
 import { generateOrderId } from "@/lib/store";
 import { useAuth } from "@/lib/auth-context";
+import { getFirebaseDb } from "@/lib/firebase";
 
 const WHATSAPP_NUMBER = "94764837777";
 
@@ -46,9 +49,10 @@ type Form = {
 function CheckoutPage() {
   const cart = useCart();
   const navigate = useNavigate();
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const orderId = useMemo(() => generateOrderId(), []);
   const [sent, setSent] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<Form>({
     name: "",
     email: "",
@@ -119,14 +123,58 @@ function CheckoutPage() {
     return lines.join("\n");
   }
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!canSubmit) return;
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-      buildMessage()
-    )}`;
-    openWhatsApp(url);
-    setSent(true);
+    if (!canSubmit || saving) return;
+    const db = getFirebaseDb();
+    if (!db) {
+      toast.error("Backend not configured.");
+      return;
+    }
+    setSaving(true);
+    try {
+      const products = cart.items.map((i) => ({
+        productId: i.id,
+        productName: i.name,
+        productType: "product",
+        price: i.priceUSD,
+        quantity: i.qty,
+        image: i.image,
+      }));
+      const totalQuantity = cart.items.reduce((n, i) => n + i.qty, 0);
+      const orderDoc = {
+        orderId,
+        userId: user?.uid ?? null,
+        customerName: form.name,
+        email: form.email,
+        phone: form.phone,
+        country: form.country,
+        city: form.city,
+        address: form.address,
+        orderNotes: form.notes,
+        products,
+        totalQuantity,
+        subtotal: cart.total,
+        deliveryFee: 0,
+        discount: 0,
+        totalAmount: cart.total,
+        status: "Pending",
+        paymentMethod: "WhatsApp / Bank Transfer",
+        createdAt: serverTimestamp(),
+      };
+      await setDoc(doc(db, "orders", orderId), orderDoc);
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+        buildMessage()
+      )}`;
+      openWhatsApp(url);
+      setSent(true);
+      toast.success(`Order ${orderId} saved.`);
+    } catch (err) {
+      console.error("[checkout] save order", err);
+      toast.error("Could not save the order. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   if (cart.items.length === 0 && !sent) {
@@ -300,11 +348,15 @@ function CheckoutPage() {
 
                 <button
                   type="submit"
-                  disabled={!canSubmit}
+                  disabled={!canSubmit || saving}
                   className="group mt-6 inline-flex w-full items-center justify-center gap-3 bg-[#25D366] px-6 py-4 text-[11px] uppercase tracking-[0.28em] text-white hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <MessageCircle className="h-4 w-4" />
-                  Confirm Order via WhatsApp
+                  {saving ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <MessageCircle className="h-4 w-4" />
+                  )}
+                  {saving ? "Saving order…" : "Confirm Order via WhatsApp"}
                 </button>
 
                 <div className="mt-6 flex items-start gap-3 border-t border-border pt-6">

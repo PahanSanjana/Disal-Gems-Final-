@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import emailjs from "@emailjs/browser";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { toast } from "sonner";
 import {
   Mail,
   Phone,
@@ -11,12 +14,17 @@ import {
   Youtube,
   MessageCircle,
   Send,
+  Loader2,
 } from "lucide-react";
 import { Navbar } from "@/components/luxury/Navbar";
 import { Footer } from "@/components/luxury/Footer";
+import { getFirebaseDb } from "@/lib/firebase";
 import contactHero from "@/assets/contact-hero.jpg";
 
 const WHATSAPP_NUMBER = "94764837777";
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string;
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string;
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -68,35 +76,58 @@ function ContactPage() {
     message: "",
   });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    const lines = [
-      `Hello Disal Ceylon Gems & Jewelry,`,
-      ``,
-      `Enquiry from the website.`,
-      ``,
-      `Name: ${form.name}`,
-      `Email: ${form.email}`,
-      `Phone: ${form.phone}`,
-      `Subject: ${form.subject}`,
-      ``,
-      `Message:`,
-      form.message,
-      ``,
-      `Thank you.`,
-    ];
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-      lines.join("\n")
-    )}`;
-    const a = document.createElement("a");
-    a.href = url;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setSent(true);
+    if (sending) return;
+    setSending(true);
+    try {
+      // 1. Save to Firestore
+      const db = getFirebaseDb();
+      if (db) {
+        try {
+          await addDoc(collection(db, "contacts"), {
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            subject: form.subject,
+            message: form.message,
+            createdAt: serverTimestamp(),
+          });
+        } catch (err) {
+          console.error("[contact] firestore", err);
+        }
+      }
+
+      // 2. Send via EmailJS
+      if (EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY) {
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          {
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            subject: form.subject,
+            message: form.message,
+          },
+          { publicKey: EMAILJS_PUBLIC_KEY }
+        );
+      } else {
+        console.warn("[contact] EmailJS env vars not set; message saved but not emailed.");
+      }
+
+      toast.success(
+        "Thank you for contacting Disal Ceylon Gems & Jewelry. Your message has been sent successfully."
+      );
+      setSent(true);
+    } catch (err) {
+      console.error("[contact] send", err);
+      toast.error("We could not send your message. Please try again.");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -195,8 +226,8 @@ function ContactPage() {
                 <div className="mt-10 border border-accent/30 bg-accent/5 p-8 text-center">
                   <p className="font-display text-2xl">Thank you.</p>
                   <p className="mt-3 text-sm text-muted-foreground">
-                    A WhatsApp conversation has been opened with the atelier.
-                    We reply within one business day.
+                    Your message has been sent to the Disal atelier.
+                    We will respond as soon as possible.
                   </p>
                 </div>
               ) : (
@@ -222,9 +253,11 @@ function ContactPage() {
                   </label>
                   <button
                     type="submit"
-                    className="group inline-flex w-full items-center justify-center gap-3 bg-onyx px-8 py-4 text-[11px] uppercase tracking-[0.28em] text-ivory hover:bg-onyx/90"
+                    disabled={sending}
+                    className="group inline-flex w-full items-center justify-center gap-3 bg-onyx px-8 py-4 text-[11px] uppercase tracking-[0.28em] text-ivory hover:bg-onyx/90 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    <Send className="h-4 w-4" /> Send message
+                    {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                    {sending ? "Sending…" : "Send message"}
                   </button>
                 </form>
               )}
