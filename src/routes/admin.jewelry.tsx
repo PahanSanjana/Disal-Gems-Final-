@@ -236,10 +236,10 @@ function JewelryForm({ initial, onClose }: { initial: Jewelry; onClose: () => vo
         </div>
 
         <div className="mt-8">
-          <p className="eyebrow mb-3">Images</p>
+          <p className="eyebrow mb-3">Images (up to 5)</p>
           <div className="flex flex-wrap gap-3">
             {form.imageUrls?.map((u, i) => (
-              <div key={u} className="relative">
+              <div key={u + i} className="relative">
                 <img src={u} alt="" className="h-20 w-20 object-cover border border-border" />
                 <button
                   type="button"
@@ -251,24 +251,43 @@ function JewelryForm({ initial, onClose }: { initial: Jewelry; onClose: () => vo
                 </button>
               </div>
             ))}
-            <label className="h-20 w-20 flex flex-col items-center justify-center border border-dashed border-border cursor-pointer hover:border-accent">
-              <Upload className="h-4 w-4 text-muted-foreground" />
-              <span className="mt-1 text-[10px] uppercase tracking-widest text-muted-foreground">Add</span>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => setFiles(Array.from(e.target.files || []))}
-              />
-            </label>
+            {files.map((f, i) => (
+              <div key={f.name + i} className="relative">
+                <img src={URL.createObjectURL(f)} alt="" className="h-20 w-20 object-cover border border-dashed border-accent" />
+                <button
+                  type="button"
+                  onClick={() => setFiles((prev) => prev.filter((_, ix) => ix !== i))}
+                  className="absolute -top-2 -right-2 bg-onyx text-ivory rounded-full h-6 w-6 flex items-center justify-center"
+                  aria-label="Remove staged image"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+            ))}
+            {(form.imageUrls?.length ?? 0) + files.length < 5 && (
+              <label className="h-20 w-20 flex flex-col items-center justify-center border border-dashed border-border cursor-pointer hover:border-accent">
+                <Upload className="h-4 w-4 text-muted-foreground" />
+                <span className="mt-1 text-[10px] uppercase tracking-widest text-muted-foreground">Add</span>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const picked = Array.from(e.target.files || []);
+                    const room = 5 - ((form.imageUrls?.length ?? 0) + files.length);
+                    setFiles((prev) => [...prev, ...picked.slice(0, Math.max(0, room))]);
+                    e.target.value = "";
+                  }}
+                />
+              </label>
+            )}
           </div>
-          {files.length > 0 && (
-            <p className="mt-3 text-[11px] uppercase tracking-widest text-muted-foreground">
-              {files.length} file(s) staged for upload on save
-            </p>
-          )}
+          <p className="mt-3 text-[11px] uppercase tracking-widest text-muted-foreground">
+            {(form.imageUrls?.length ?? 0) + files.length} / 5 images
+          </p>
         </div>
+
 
         {err && <p className="mt-4 text-[11px] uppercase tracking-[0.22em] text-destructive">{err}</p>}
 
