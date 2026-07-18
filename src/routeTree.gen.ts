@@ -28,6 +28,7 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminJewelryRouteImport } from './routes/admin.jewelry'
 import { Route as AdminGemstonesRouteImport } from './routes/admin.gemstones'
 import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
+import { Route as AdminContactsRouteImport } from './routes/admin.contacts'
 import { Route as AdminBootstrapRouteImport } from './routes/admin.bootstrap'
 
 const WishlistRoute = WishlistRouteImport.update({
@@ -125,6 +126,11 @@ const AdminCustomersRoute = AdminCustomersRouteImport.update({
   path: '/admin/customers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminContactsRoute = AdminContactsRouteImport.update({
+  id: '/admin/contacts',
+  path: '/admin/contacts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBootstrapRoute = AdminBootstrapRouteImport.update({
   id: '/admin/bootstrap',
   path: '/admin/bootstrap',
@@ -145,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
   '/admin/bootstrap': typeof AdminBootstrapRoute
+  '/admin/contacts': typeof AdminContactsRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/gemstones': typeof AdminGemstonesRoute
   '/admin/jewelry': typeof AdminJewelryRoute
@@ -167,6 +174,7 @@ export interface FileRoutesByTo {
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
   '/admin/bootstrap': typeof AdminBootstrapRoute
+  '/admin/contacts': typeof AdminContactsRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/gemstones': typeof AdminGemstonesRoute
   '/admin/jewelry': typeof AdminJewelryRoute
@@ -190,6 +198,7 @@ export interface FileRoutesById {
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
   '/admin/bootstrap': typeof AdminBootstrapRoute
+  '/admin/contacts': typeof AdminContactsRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/gemstones': typeof AdminGemstonesRoute
   '/admin/jewelry': typeof AdminJewelryRoute
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
     | '/jewelry'
     | '/wishlist'
     | '/admin/bootstrap'
+    | '/admin/contacts'
     | '/admin/customers'
     | '/admin/gemstones'
     | '/admin/jewelry'
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/jewelry'
     | '/wishlist'
     | '/admin/bootstrap'
+    | '/admin/contacts'
     | '/admin/customers'
     | '/admin/gemstones'
     | '/admin/jewelry'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '/jewelry'
     | '/wishlist'
     | '/admin/bootstrap'
+    | '/admin/contacts'
     | '/admin/customers'
     | '/admin/gemstones'
     | '/admin/jewelry'
@@ -281,6 +293,7 @@ export interface RootRouteChildren {
   JewelryRoute: typeof JewelryRoute
   WishlistRoute: typeof WishlistRoute
   AdminBootstrapRoute: typeof AdminBootstrapRoute
+  AdminContactsRoute: typeof AdminContactsRoute
   AdminCustomersRoute: typeof AdminCustomersRoute
   AdminGemstonesRoute: typeof AdminGemstonesRoute
   AdminJewelryRoute: typeof AdminJewelryRoute
@@ -425,6 +438,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCustomersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/contacts': {
+      id: '/admin/contacts'
+      path: '/admin/contacts'
+      fullPath: '/admin/contacts'
+      preLoaderRoute: typeof AdminContactsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/bootstrap': {
       id: '/admin/bootstrap'
       path: '/admin/bootstrap'
@@ -449,6 +469,7 @@ const rootRouteChildren: RootRouteChildren = {
   JewelryRoute: JewelryRoute,
   WishlistRoute: WishlistRoute,
   AdminBootstrapRoute: AdminBootstrapRoute,
+  AdminContactsRoute: AdminContactsRoute,
   AdminCustomersRoute: AdminCustomersRoute,
   AdminGemstonesRoute: AdminGemstonesRoute,
   AdminJewelryRoute: AdminJewelryRoute,

@@ -1,12 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowUpRight, MessageCircle, Check, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, MessageCircle, Check, ShieldCheck, Loader2 } from "lucide-react";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { toast } from "sonner";
 import { Navbar } from "@/components/luxury/Navbar";
 import { Footer } from "@/components/luxury/Footer";
 import { useCart } from "@/lib/store";
 import { formatPrice } from "@/lib/products";
 import { generateOrderId } from "@/lib/store";
 import { useAuth } from "@/lib/auth-context";
+import { getFirebaseDb } from "@/lib/firebase";
 
 const WHATSAPP_NUMBER = "94764837777";
 
