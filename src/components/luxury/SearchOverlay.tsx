@@ -2,18 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
-import { products } from "@/lib/products";
+import { useAllProducts, type StoreProduct } from "@/lib/products";
 
 type Props = { open: boolean; onClose: () => void };
 
-const collections = [
-  { id: "ceylon-sapphire", name: "Ceylon Sapphire Collection", to: "/collections" },
-  { id: "pigeon-ruby", name: "Pigeon Blood Rubies", to: "/collections" },
-  { id: "muzo-emerald", name: "Muzo Emeralds", to: "/collections" },
-];
-
 export function SearchOverlay({ open, onClose }: Props) {
   const [q, setQ] = useState("");
+  const all = useAllProducts();
 
   useEffect(() => {
     if (!open) return;
@@ -34,25 +29,18 @@ export function SearchOverlay({ open, onClose }: Props) {
 
   const results = useMemo(() => {
     const term = q.trim().toLowerCase();
-    if (!term) return { gems: [], jewelry: [], cols: [] as typeof collections };
-    const match = (p: typeof products[number]) =>
-      p.name.toLowerCase().includes(term) ||
-      p.type.toLowerCase().includes(term) ||
-      p.color.toLowerCase().includes(term) ||
-      p.category.toLowerCase().includes(term) ||
-      p.origin.toLowerCase().includes(term);
+    if (!term || !all) return { gems: [] as StoreProduct[], jewelry: [] as StoreProduct[] };
+    const match = (p: StoreProduct) =>
+      `${p.name} ${p.category ?? ""} ${p.origin ?? ""} ${p.color ?? ""} ${p.metal ?? ""} ${p.gemstoneType ?? ""}`
+        .toLowerCase()
+        .includes(term);
     return {
-      gems: products.filter((p) => p.category === "Gemstone" && match(p)).slice(0, 6),
-      jewelry: products.filter((p) => p.category !== "Gemstone" && match(p)).slice(0, 6),
-      cols: collections.filter((c) => c.name.toLowerCase().includes(term)),
+      gems: all.filter((p) => p.kind === "gemstone" && match(p)).slice(0, 6),
+      jewelry: all.filter((p) => p.kind === "jewelry" && match(p)).slice(0, 6),
     };
-  }, [q]);
+  }, [q, all]);
 
-  const empty =
-    q.trim() &&
-    results.gems.length === 0 &&
-    results.jewelry.length === 0 &&
-    results.cols.length === 0;
+  const empty = q.trim() && results.gems.length === 0 && results.jewelry.length === 0;
 
   return (
     <AnimatePresence>
@@ -71,11 +59,7 @@ export function SearchOverlay({ open, onClose }: Props) {
           >
             <div className="flex items-center justify-between">
               <p className="eyebrow">Search the maison</p>
-              <button
-                onClick={onClose}
-                aria-label="Close search"
-                className="hover:text-accent transition-colors"
-              >
+              <button onClick={onClose} aria-label="Close search" className="hover:text-accent transition-colors">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -102,21 +86,6 @@ export function SearchOverlay({ open, onClose }: Props) {
                 <p className="text-sm text-muted-foreground">
                   No matches for “{q}”. Write to our atelier for private enquiries.
                 </p>
-              )}
-
-              {results.cols.length > 0 && (
-                <Section title="Collections">
-                  {results.cols.map((c) => (
-                    <Link
-                      key={c.id}
-                      to={c.to}
-                      onClick={onClose}
-                      className="block py-3 border-b border-border/50 text-sm hover:text-accent"
-                    >
-                      {c.name}
-                    </Link>
-                  ))}
-                </Section>
               )}
 
               {results.gems.length > 0 && (
@@ -155,30 +124,23 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function ResultCard({
-  p,
-  onClose,
-}: {
-  p: (typeof products)[number];
-  onClose: () => void;
-}) {
+function ResultCard({ p, onClose }: { p: StoreProduct; onClose: () => void }) {
   return (
-    <Link
-      to="/product/$id"
-      params={{ id: p.id }}
-      onClick={onClose}
-      className="group block"
-    >
+    <Link to="/product/$id" params={{ id: p.id }} onClick={onClose} className="group block">
       <div className="relative aspect-[4/5] overflow-hidden bg-muted">
-        <img
-          src={p.images[0]}
-          alt={p.name}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
+        {p.imageUrls[0] ? (
+          <img
+            src={p.imageUrls[0]}
+            alt={p.name}
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">No image</div>
+        )}
       </div>
       <div className="mt-3">
         <p className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-          {p.category} · {p.origin}
+          {p.kind === "gemstone" ? "Gemstone" : "Jewelry"}{p.origin ? ` · ${p.origin}` : ""}
         </p>
         <p className="mt-1 font-display text-lg">{p.name}</p>
       </div>

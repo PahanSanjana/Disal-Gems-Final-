@@ -3,7 +3,7 @@ import { Heart, ArrowUpRight, X } from "lucide-react";
 import { Navbar } from "@/components/luxury/Navbar";
 import { Footer } from "@/components/luxury/Footer";
 import { useWishlist } from "@/lib/store";
-import { findProduct, formatPrice } from "@/lib/products";
+import { formatPrice } from "@/lib/products";
 import { useAuth } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/wishlist")({
@@ -14,9 +14,7 @@ export const Route = createFileRoute("/wishlist")({
 function WishlistPage() {
   const wish = useWishlist();
   const { user } = useAuth();
-  const items = wish.ids.map(findProduct).filter(Boolean) as NonNullable<
-    ReturnType<typeof findProduct>
-  >[];
+  const items = wish.items;
 
   return (
     <div className="bg-background text-foreground">
@@ -51,16 +49,10 @@ function WishlistPage() {
               Save gemstones and jewelry as you browse — they'll wait here.
             </p>
             <div className="mt-10 flex justify-center gap-3">
-              <Link
-                to="/gemstones"
-                className="border border-onyx/30 px-6 py-3 text-[11px] uppercase tracking-[0.24em] hover:border-accent hover:text-accent"
-              >
+              <Link to="/gemstones" className="border border-onyx/30 px-6 py-3 text-[11px] uppercase tracking-[0.24em] hover:border-accent hover:text-accent">
                 Browse gemstones
               </Link>
-              <Link
-                to="/jewelry"
-                className="border border-onyx/30 px-6 py-3 text-[11px] uppercase tracking-[0.24em] hover:border-accent hover:text-accent"
-              >
+              <Link to="/jewelry" className="border border-onyx/30 px-6 py-3 text-[11px] uppercase tracking-[0.24em] hover:border-accent hover:text-accent">
                 Browse jewelry
               </Link>
             </div>
@@ -71,12 +63,18 @@ function WishlistPage() {
               <div key={p.id} className="group block">
                 <div className="relative aspect-square overflow-hidden bg-muted">
                   <Link to="/product/$id" params={{ id: p.id }}>
-                    <img
-                      src={p.images[0]}
-                      alt={p.name}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.05]"
-                    />
+                    {p.image ? (
+                      <img
+                        src={p.image}
+                        alt={p.name}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.05]"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
+                        No image
+                      </div>
+                    )}
                   </Link>
                   <button
                     onClick={() => wish.remove(p.id)}
@@ -88,7 +86,7 @@ function WishlistPage() {
                 </div>
                 <div className="mt-5">
                   <p className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-                    {p.category} · {p.origin}
+                    {p.kind === "gemstone" ? "Gemstone" : "Jewelry"}
                   </p>
                   <div className="mt-2 flex items-start justify-between gap-4">
                     <Link
