@@ -348,11 +348,15 @@ function CheckoutPage() {
 
                 <button
                   type="submit"
-                  disabled={!canSubmit}
+                  disabled={!canSubmit || saving}
                   className="group mt-6 inline-flex w-full items-center justify-center gap-3 bg-[#25D366] px-6 py-4 text-[11px] uppercase tracking-[0.28em] text-white hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <MessageCircle className="h-4 w-4" />
-                  Confirm Order via WhatsApp
+                  {saving ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <MessageCircle className="h-4 w-4" />
+                  )}
+                  {saving ? "Saving order…" : "Confirm Order via WhatsApp"}
                 </button>
 
                 <div className="mt-6 flex items-start gap-3 border-t border-border pt-6">
