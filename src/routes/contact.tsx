@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import emailjs from "@emailjs/browser";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { toast } from "sonner";
 import {
   Mail,
   Phone,
@@ -11,12 +14,17 @@ import {
   Youtube,
   MessageCircle,
   Send,
+  Loader2,
 } from "lucide-react";
 import { Navbar } from "@/components/luxury/Navbar";
 import { Footer } from "@/components/luxury/Footer";
+import { getFirebaseDb } from "@/lib/firebase";
 import contactHero from "@/assets/contact-hero.jpg";
 
 const WHATSAPP_NUMBER = "94764837777";
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string;
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string;
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
