@@ -226,8 +226,8 @@ function ContactPage() {
                 <div className="mt-10 border border-accent/30 bg-accent/5 p-8 text-center">
                   <p className="font-display text-2xl">Thank you.</p>
                   <p className="mt-3 text-sm text-muted-foreground">
-                    A WhatsApp conversation has been opened with the atelier.
-                    We reply within one business day.
+                    Your message has been sent to the Disal atelier.
+                    We will respond as soon as possible.
                   </p>
                 </div>
               ) : (
@@ -253,9 +253,11 @@ function ContactPage() {
                   </label>
                   <button
                     type="submit"
-                    className="group inline-flex w-full items-center justify-center gap-3 bg-onyx px-8 py-4 text-[11px] uppercase tracking-[0.28em] text-ivory hover:bg-onyx/90"
+                    disabled={sending}
+                    className="group inline-flex w-full items-center justify-center gap-3 bg-onyx px-8 py-4 text-[11px] uppercase tracking-[0.28em] text-ivory hover:bg-onyx/90 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    <Send className="h-4 w-4" /> Send message
+                    {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                    {sending ? "Sending…" : "Send message"}
                   </button>
                 </form>
               )}
