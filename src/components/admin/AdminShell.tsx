@@ -5,7 +5,8 @@ import {
   Gem,
   Sparkles,
   ShoppingBag,
-  CalendarClock,
+  Users,
+  MessageSquare,
   LogOut,
   Menu,
 } from "lucide-react";
@@ -18,7 +19,8 @@ const NAV: { to: string; label: string; icon: any; exact?: boolean }[] = [
   { to: "/admin/gemstones", label: "Gemstones", icon: Gem },
   { to: "/admin/jewelry", label: "Jewelry", icon: Sparkles },
   { to: "/admin/orders", label: "Orders", icon: ShoppingBag },
-  { to: "/admin/appointments", label: "Appointments", icon: CalendarClock },
+  { to: "/admin/customers", label: "Customers", icon: Users },
+  { to: "/admin/contacts", label: "Contact Messages", icon: MessageSquare },
 ];
 
 export function AdminGate({ children }: { children: ReactNode }) {
