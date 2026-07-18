@@ -49,9 +49,10 @@ type Form = {
 function CheckoutPage() {
   const cart = useCart();
   const navigate = useNavigate();
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const orderId = useMemo(() => generateOrderId(), []);
   const [sent, setSent] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<Form>({
     name: "",
     email: "",
