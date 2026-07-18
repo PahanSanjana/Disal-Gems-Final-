@@ -127,6 +127,7 @@ function RootComponent() {
       <AuthProvider>
         <WishlistSync />
         <Outlet />
+        <Toaster position="top-center" richColors />
       </AuthProvider>
     </QueryClientProvider>
   );
