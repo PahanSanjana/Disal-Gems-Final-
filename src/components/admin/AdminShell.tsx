@@ -8,7 +8,6 @@ import {
   CalendarClock,
   LogOut,
   Menu,
-  UploadCloud,
 } from "lucide-react";
 import { useState } from "react";
 import { useIsAdmin } from "@/lib/admin-context";
@@ -20,7 +19,6 @@ const NAV: { to: string; label: string; icon: any; exact?: boolean }[] = [
   { to: "/admin/jewelry", label: "Jewelry", icon: Sparkles },
   { to: "/admin/orders", label: "Orders", icon: ShoppingBag },
   { to: "/admin/appointments", label: "Appointments", icon: CalendarClock },
-  { to: "/admin/seed", label: "Seed Data", icon: UploadCloud },
 ];
 
 export function AdminGate({ children }: { children: ReactNode }) {

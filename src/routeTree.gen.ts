@@ -23,7 +23,6 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
-import { Route as AdminSeedRouteImport } from './routes/admin.seed'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminJewelryRouteImport } from './routes/admin.jewelry'
@@ -101,11 +100,6 @@ const ProductIdRoute = ProductIdRouteImport.update({
   path: '/product/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminSeedRoute = AdminSeedRouteImport.update({
-  id: '/admin/seed',
-  path: '/admin/seed',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminOrdersRoute = AdminOrdersRouteImport.update({
   id: '/admin/orders',
   path: '/admin/orders',
@@ -156,7 +150,6 @@ export interface FileRoutesByFullPath {
   '/admin/jewelry': typeof AdminJewelryRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRoute
-  '/admin/seed': typeof AdminSeedRoute
   '/product/$id': typeof ProductIdRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -179,7 +172,6 @@ export interface FileRoutesByTo {
   '/admin/jewelry': typeof AdminJewelryRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRoute
-  '/admin/seed': typeof AdminSeedRoute
   '/product/$id': typeof ProductIdRoute
   '/admin': typeof AdminIndexRoute
 }
@@ -203,7 +195,6 @@ export interface FileRoutesById {
   '/admin/jewelry': typeof AdminJewelryRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRoute
-  '/admin/seed': typeof AdminSeedRoute
   '/product/$id': typeof ProductIdRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -228,7 +219,6 @@ export interface FileRouteTypes {
     | '/admin/jewelry'
     | '/admin/login'
     | '/admin/orders'
-    | '/admin/seed'
     | '/product/$id'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -251,7 +241,6 @@ export interface FileRouteTypes {
     | '/admin/jewelry'
     | '/admin/login'
     | '/admin/orders'
-    | '/admin/seed'
     | '/product/$id'
     | '/admin'
   id:
@@ -274,7 +263,6 @@ export interface FileRouteTypes {
     | '/admin/jewelry'
     | '/admin/login'
     | '/admin/orders'
-    | '/admin/seed'
     | '/product/$id'
     | '/admin/'
   fileRoutesById: FileRoutesById
@@ -298,7 +286,6 @@ export interface RootRouteChildren {
   AdminJewelryRoute: typeof AdminJewelryRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
-  AdminSeedRoute: typeof AdminSeedRoute
   ProductIdRoute: typeof ProductIdRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -403,13 +390,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/seed': {
-      id: '/admin/seed'
-      path: '/admin/seed'
-      fullPath: '/admin/seed'
-      preLoaderRoute: typeof AdminSeedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/orders': {
       id: '/admin/orders'
       path: '/admin/orders'
@@ -474,7 +454,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminJewelryRoute: AdminJewelryRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminOrdersRoute: AdminOrdersRoute,
-  AdminSeedRoute: AdminSeedRoute,
   ProductIdRoute: ProductIdRoute,
   AdminIndexRoute: AdminIndexRoute,
 }

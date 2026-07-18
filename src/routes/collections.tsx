@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Navbar } from "@/components/luxury/Navbar";
 import { Footer } from "@/components/luxury/Footer";
 import { Reveal } from "@/components/luxury/Reveal";
-import { products, formatPrice } from "@/lib/products";
+import { useAllProducts, formatPrice } from "@/lib/products";
 import sapphireImg from "@/assets/collection-sapphire.jpg";
 import emeraldImg from "@/assets/collection-emerald.jpg";
 import rubyImg from "@/assets/collection-ruby.jpg";
@@ -16,8 +16,7 @@ export const Route = createFileRoute("/collections")({
       { title: "Collections — Disal Ceylon Gems & Jewelry" },
       {
         name: "description",
-        content:
-          "Editorial collections of Ceylon gemstones and heirloom jewelry — the Ratnapura Blues, the Ember Ruby edit, and the Muzo emerald archive.",
+        content: "Editorial collections of Ceylon gemstones and heirloom jewelry from the Disal atelier.",
       },
     ],
   }),
@@ -33,7 +32,8 @@ const editorials = [
     body:
       "A study in blue — from cornflower daylight to midnight velvet. Each stone drawn from the alluvial gravels of Sri Lanka's Sabaragamuwa highlands.",
     hero: sapphireImg,
-    filter: (id: string) => id.startsWith("cs") || id === "rg-sap-01" || id === "pd-155",
+    match: (p: { category?: string; color?: string; name: string }) =>
+      /sapphire/i.test(p.category ?? "") || /sapphire|blue/i.test(p.name),
   },
   {
     id: "ember",
@@ -41,9 +41,10 @@ const editorials = [
     title: "Ember — The Ruby Edit",
     subtitle: "Untreated Mogok rubies, still warm from the earth.",
     body:
-      "Selected for the elusive 'pigeon blood' red and set in whispers of rose gold. A small, deliberate archive.",
+      "Selected for the elusive 'pigeon blood' red and set in whispers of rose gold.",
     hero: rubyImg,
-    filter: (id: string) => id.startsWith("pr") || id === "er-ruby-01",
+    match: (p: { category?: string; name: string }) =>
+      /ruby/i.test(p.category ?? "") || /ruby/i.test(p.name),
   },
   {
     id: "muzo",
@@ -53,22 +54,20 @@ const editorials = [
     body:
       "A curated series of Muzo emeralds — cut for clarity, set for wear, chosen for the particular green found only there.",
     hero: emeraldImg,
-    filter: (id: string) => id.startsWith("em") || id === "nk-em-01",
+    match: (p: { category?: string; name: string }) =>
+      /emerald/i.test(p.category ?? "") || /emerald/i.test(p.name),
   },
 ];
 
 function CollectionsPage() {
+  const all = useAllProducts() ?? [];
+
   return (
     <div className="bg-background text-foreground">
       <Navbar />
 
-      {/* HERO */}
       <section className="relative min-h-[80svh] overflow-hidden">
-        <img
-          src={heroSecondary}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+        <img src={heroSecondary} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-onyx/40 via-onyx/30 to-background" />
         <div className="relative mx-auto flex min-h-[80svh] max-w-[1400px] flex-col justify-end px-6 py-24 md:px-10 md:py-32">
           <p className="eyebrow text-ivory/80">The Collections</p>
@@ -83,28 +82,17 @@ function CollectionsPage() {
         </div>
       </section>
 
-      {/* VOLUMES */}
       {editorials.map((ed, i) => {
-        const items = products.filter((p) => ed.filter(p.id)).slice(0, 3);
+        const items = all.filter(ed.match).slice(0, 3);
         return (
-          <section
-            key={ed.id}
-            className={`py-28 md:py-40 ${i % 2 === 1 ? "bg-secondary/60" : ""}`}
-          >
+          <section key={ed.id} className={`py-28 md:py-40 ${i % 2 === 1 ? "bg-secondary/60" : ""}`}>
             <div className="mx-auto max-w-[1400px] px-6 md:px-10">
               <div className="grid gap-14 md:grid-cols-12 md:items-end">
                 <Reveal className="md:col-span-6">
                   <div className="relative aspect-[4/5] overflow-hidden">
-                    <img
-                      src={ed.hero}
-                      alt={ed.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover"
-                    />
+                    <img src={ed.hero} alt={ed.title} loading="lazy" className="h-full w-full object-cover" />
                     <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-onyx/60 to-transparent text-ivory">
-                      <p className="text-[10px] uppercase tracking-[0.3em] text-ivory/70">
-                        {ed.eyebrow}
-                      </p>
+                      <p className="text-[10px] uppercase tracking-[0.3em] text-ivory/70">{ed.eyebrow}</p>
                       <p className="mt-2 font-display text-2xl">{ed.title}</p>
                     </div>
                   </div>
@@ -113,68 +101,54 @@ function CollectionsPage() {
                 <div className="md:col-span-6">
                   <Reveal>
                     <p className="eyebrow">{ed.eyebrow}</p>
-                    <h2 className="mt-4 font-display text-4xl md:text-6xl leading-[1.02] text-balance">
-                      {ed.title}
-                    </h2>
-                    <p className="mt-4 font-display italic text-xl md:text-2xl text-accent/90">
-                      {ed.subtitle}
-                    </p>
-                    <p className="mt-8 max-w-lg text-sm leading-relaxed text-muted-foreground">
-                      {ed.body}
-                    </p>
+                    <h2 className="mt-4 font-display text-4xl md:text-6xl leading-[1.02] text-balance">{ed.title}</h2>
+                    <p className="mt-4 font-display italic text-xl md:text-2xl text-accent/90">{ed.subtitle}</p>
+                    <p className="mt-8 max-w-lg text-sm leading-relaxed text-muted-foreground">{ed.body}</p>
                   </Reveal>
                 </div>
               </div>
 
-              <div className="mt-16 grid gap-6 md:grid-cols-3">
-                {items.map((p, idx) => (
-                  <Reveal key={p.id} delay={idx * 0.08}>
-                    <Link
-                      to="/product/$id"
-                      params={{ id: p.id }}
-                      className="group block"
-                    >
-                      <div className="relative aspect-square overflow-hidden bg-muted">
-                        <img
-                          src={p.images[0]}
-                          alt={p.name}
-                          loading="lazy"
-                          className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.05]"
-                        />
-                      </div>
-                      <div className="mt-5 flex items-start justify-between gap-4">
-                        <div>
-                          <h3 className="font-display text-xl leading-tight">
-                            {p.name}
-                          </h3>
-                          <p className="mt-1 text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
-                            {p.carat} ct · {p.origin}
-                          </p>
+              {items.length > 0 && (
+                <div className="mt-16 grid gap-6 md:grid-cols-3">
+                  {items.map((p, idx) => (
+                    <Reveal key={p.id} delay={idx * 0.08}>
+                      <Link to="/product/$id" params={{ id: p.id }} className="group block">
+                        <div className="relative aspect-square overflow-hidden bg-muted">
+                          {p.imageUrls[0] && (
+                            <img
+                              src={p.imageUrls[0]}
+                              alt={p.name}
+                              loading="lazy"
+                              className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.05]"
+                            />
+                          )}
                         </div>
-                        <span className="text-[11px] uppercase tracking-[0.24em] text-accent">
-                          {formatPrice(p.priceUSD)}
-                        </span>
-                      </div>
-                    </Link>
-                  </Reveal>
-                ))}
-              </div>
+                        <div className="mt-5 flex items-start justify-between gap-4">
+                          <div>
+                            <h3 className="font-display text-xl leading-tight">{p.name}</h3>
+                            <p className="mt-1 text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
+                              {[p.carat ? `${p.carat} ct` : null, p.origin].filter(Boolean).join(" · ")}
+                            </p>
+                          </div>
+                          <span className="text-[11px] uppercase tracking-[0.24em] text-accent">
+                            {formatPrice(p.price)}
+                          </span>
+                        </div>
+                      </Link>
+                    </Reveal>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
         );
       })}
 
-      {/* CRAFT CTA */}
       <section className="mx-auto max-w-[1400px] px-6 py-28 md:px-10 md:py-40">
         <div className="grid gap-14 md:grid-cols-12 md:items-center">
           <Reveal className="md:col-span-7">
             <div className="relative aspect-[4/5] overflow-hidden">
-              <img
-                src={craftImg}
-                alt="Atelier craftsmanship"
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
+              <img src={craftImg} alt="Atelier craftsmanship" loading="lazy" className="h-full w-full object-cover" />
             </div>
           </Reveal>
           <div className="md:col-span-5">
@@ -187,10 +161,7 @@ function CollectionsPage() {
                 Every Disal piece can be commissioned. Bring a stone or an
                 idea; leave with an heirloom.
               </p>
-              <Link
-                to="/appointment"
-                className="mt-10 inline-flex items-center gap-3 bg-onyx px-8 py-4 text-[11px] uppercase tracking-[0.28em] text-ivory hover:bg-onyx/90"
-              >
+              <Link to="/appointment" className="mt-10 inline-flex items-center gap-3 bg-onyx px-8 py-4 text-[11px] uppercase tracking-[0.28em] text-ivory hover:bg-onyx/90">
                 Commission a piece
                 <ArrowUpRight className="h-4 w-4" />
               </Link>

@@ -8,8 +8,16 @@ export type CartItem = {
   qty: number;
 };
 
+export type WishItem = {
+  id: string;
+  kind: "gemstone" | "jewelry";
+  name: string;
+  priceUSD: number;
+  image: string;
+};
+
 const CART_KEY = "disal_cart_v1";
-const WISH_KEY = "disal_wishlist_v1";
+const WISH_KEY = "disal_wishlist_v2";
 
 function makeStore<T>(key: string, initial: T) {
   let state: T = initial;
@@ -46,7 +54,7 @@ function makeStore<T>(key: string, initial: T) {
 }
 
 const cartStore = makeStore<CartItem[]>(CART_KEY, []);
-const wishStore = makeStore<string[]>(WISH_KEY, []);
+const wishStore = makeStore<WishItem[]>(WISH_KEY, []);
 
 let hydrated = false;
 function ensureHydrated() {
@@ -56,16 +64,12 @@ function ensureHydrated() {
   wishStore.load();
 }
 
-const serverSnap: CartItem[] = [];
-const serverWish: string[] = [];
+const serverCartSnap: CartItem[] = [];
+const serverWishSnap: WishItem[] = [];
 
 export function useCart() {
   ensureHydrated();
-  const items = useSyncExternalStore(
-    cartStore.subscribe,
-    cartStore.get,
-    () => serverSnap
-  );
+  const items = useSyncExternalStore(cartStore.subscribe, cartStore.get, () => serverCartSnap);
 
   return {
     items,
@@ -80,10 +84,7 @@ export function useCart() {
       cartStore.set(next);
     },
     update(id: string, qty: number) {
-      const next = cartStore
-        .get()
-        .map((i) => (i.id === id ? { ...i, qty: Math.max(1, qty) } : i));
-      cartStore.set(next);
+      cartStore.set(cartStore.get().map((i) => (i.id === id ? { ...i, qty: Math.max(1, qty) } : i)));
     },
     remove(id: string) {
       cartStore.set(cartStore.get().filter((i) => i.id !== id));
@@ -96,37 +97,32 @@ export function useCart() {
 
 export function useWishlist() {
   ensureHydrated();
-  const ids = useSyncExternalStore(
-    wishStore.subscribe,
-    wishStore.get,
-    () => serverWish
-  );
+  const items = useSyncExternalStore(wishStore.subscribe, wishStore.get, () => serverWishSnap);
   return {
-    ids,
-    has: (id: string) => ids.includes(id),
-    toggle(id: string) {
+    items,
+    ids: items.map((i) => i.id),
+    has: (id: string) => items.some((i) => i.id === id),
+    toggle(item: WishItem) {
       const current = wishStore.get();
       wishStore.set(
-        current.includes(id) ? current.filter((x) => x !== id) : [...current, id]
+        current.some((i) => i.id === item.id)
+          ? current.filter((i) => i.id !== item.id)
+          : [...current, item]
       );
     },
     remove(id: string) {
-      wishStore.set(wishStore.get().filter((x) => x !== id));
+      wishStore.set(wishStore.get().filter((i) => i.id !== id));
     },
   };
 }
 
-/** Store-level accessor used by WishlistSync to replace the entire list atomically. */
+/** Used by the WishlistSync component to replace list atomically. */
 export function useWishlistStore() {
   ensureHydrated();
-  const ids = useSyncExternalStore(
-    wishStore.subscribe,
-    wishStore.get,
-    () => serverWish
-  );
+  const items = useSyncExternalStore(wishStore.subscribe, wishStore.get, () => serverWishSnap);
   return {
-    ids,
-    replace: (next: string[]) => wishStore.set(next),
+    items,
+    replace: (next: WishItem[]) => wishStore.set(next),
   };
 }
 
