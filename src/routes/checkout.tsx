@@ -123,14 +123,58 @@ function CheckoutPage() {
     return lines.join("\n");
   }
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!canSubmit) return;
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-      buildMessage()
-    )}`;
-    openWhatsApp(url);
-    setSent(true);
+    if (!canSubmit || saving) return;
+    const db = getFirebaseDb();
+    if (!db) {
+      toast.error("Backend not configured.");
+      return;
+    }
+    setSaving(true);
+    try {
+      const products = cart.items.map((i) => ({
+        productId: i.id,
+        productName: i.name,
+        productType: "product",
+        price: i.priceUSD,
+        quantity: i.qty,
+        image: i.image,
+      }));
+      const totalQuantity = cart.items.reduce((n, i) => n + i.qty, 0);
+      const orderDoc = {
+        orderId,
+        userId: user?.uid ?? null,
+        customerName: form.name,
+        email: form.email,
+        phone: form.phone,
+        country: form.country,
+        city: form.city,
+        address: form.address,
+        orderNotes: form.notes,
+        products,
+        totalQuantity,
+        subtotal: cart.total,
+        deliveryFee: 0,
+        discount: 0,
+        totalAmount: cart.total,
+        status: "Pending",
+        paymentMethod: "WhatsApp / Bank Transfer",
+        createdAt: serverTimestamp(),
+      };
+      await setDoc(doc(db, "orders", orderId), orderDoc);
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+        buildMessage()
+      )}`;
+      openWhatsApp(url);
+      setSent(true);
+      toast.success(`Order ${orderId} saved.`);
+    } catch (err) {
+      console.error("[checkout] save order", err);
+      toast.error("Could not save the order. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   if (cart.items.length === 0 && !sent) {
