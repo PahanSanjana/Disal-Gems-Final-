@@ -9,75 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WishlistRouteImport } from './routes/wishlist'
-import { Route as JewelryRouteImport } from './routes/jewelry'
-import { Route as GemstonesRouteImport } from './routes/gemstones'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CollectionsRouteImport } from './routes/collections'
-import { Route as CheckoutRouteImport } from './routes/checkout'
-import { Route as CartRouteImport } from './routes/cart'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AppointmentRouteImport } from './routes/appointment'
-import { Route as AccountRouteImport } from './routes/account'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AccountRouteImport } from './routes/account'
+import { Route as AppointmentRouteImport } from './routes/appointment'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CartRouteImport } from './routes/cart'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as CollectionsRouteImport } from './routes/collections'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as GemstonesRouteImport } from './routes/gemstones'
+import { Route as JewelryRouteImport } from './routes/jewelry'
+import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as ProductIdRouteImport } from './routes/product.$id'
-import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
-import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminJewelryRouteImport } from './routes/admin.jewelry'
-import { Route as AdminGemstonesRouteImport } from './routes/admin.gemstones'
 import { Route as AdminBootstrapRouteImport } from './routes/admin.bootstrap'
-import { Route as AdminAppointmentsRouteImport } from './routes/admin.appointments'
+import { Route as AdminGemstonesRouteImport } from './routes/admin.gemstones'
+import { Route as AdminJewelryRouteImport } from './routes/admin.jewelry'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
+import { Route as ProductIdRouteImport } from './routes/product.$id'
 
-const WishlistRoute = WishlistRouteImport.update({
-  id: '/wishlist',
-  path: '/wishlist',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JewelryRoute = JewelryRouteImport.update({
-  id: '/jewelry',
-  path: '/jewelry',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GemstonesRoute = GemstonesRouteImport.update({
-  id: '/gemstones',
-  path: '/gemstones',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CollectionsRoute = CollectionsRouteImport.update({
-  id: '/collections',
-  path: '/collections',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CheckoutRoute = CheckoutRouteImport.update({
-  id: '/checkout',
-  path: '/checkout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CartRoute = CartRouteImport.update({
-  id: '/cart',
-  path: '/cart',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppointmentRoute = AppointmentRouteImport.update({
-  id: '/appointment',
-  path: '/appointment',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccountRoute = AccountRouteImport.update({
-  id: '/account',
-  path: '/account',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -85,9 +39,54 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppointmentRoute = AppointmentRouteImport.update({
+  id: '/appointment',
+  path: '/appointment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartRoute = CartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CollectionsRoute = CollectionsRouteImport.update({
+  id: '/collections',
+  path: '/collections',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GemstonesRoute = GemstonesRouteImport.update({
+  id: '/gemstones',
+  path: '/gemstones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JewelryRoute = JewelryRouteImport.update({
+  id: '/jewelry',
+  path: '/jewelry',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WishlistRoute = WishlistRouteImport.update({
+  id: '/wishlist',
+  path: '/wishlist',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -95,24 +94,9 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductIdRoute = ProductIdRouteImport.update({
-  id: '/product/$id',
-  path: '/product/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminOrdersRoute = AdminOrdersRouteImport.update({
-  id: '/admin/orders',
-  path: '/admin/orders',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin/login',
-  path: '/admin/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminJewelryRoute = AdminJewelryRouteImport.update({
-  id: '/admin/jewelry',
-  path: '/admin/jewelry',
+const AdminBootstrapRoute = AdminBootstrapRouteImport.update({
+  id: '/admin/bootstrap',
+  path: '/admin/bootstrap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminGemstonesRoute = AdminGemstonesRouteImport.update({
@@ -120,14 +104,24 @@ const AdminGemstonesRoute = AdminGemstonesRouteImport.update({
   path: '/admin/gemstones',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminBootstrapRoute = AdminBootstrapRouteImport.update({
-  id: '/admin/bootstrap',
-  path: '/admin/bootstrap',
+const AdminJewelryRoute = AdminJewelryRouteImport.update({
+  id: '/admin/jewelry',
+  path: '/admin/jewelry',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminAppointmentsRoute = AdminAppointmentsRouteImport.update({
-  id: '/admin/appointments',
-  path: '/admin/appointments',
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminOrdersRoute = AdminOrdersRouteImport.update({
+  id: '/admin/orders',
+  path: '/admin/orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductIdRoute = ProductIdRouteImport.update({
+  id: '/product/$id',
+  path: '/product/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -144,7 +138,6 @@ export interface FileRoutesByFullPath {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
-  '/admin/appointments': typeof AdminAppointmentsRoute
   '/admin/bootstrap': typeof AdminBootstrapRoute
   '/admin/gemstones': typeof AdminGemstonesRoute
   '/admin/jewelry': typeof AdminJewelryRoute
@@ -166,7 +159,6 @@ export interface FileRoutesByTo {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
-  '/admin/appointments': typeof AdminAppointmentsRoute
   '/admin/bootstrap': typeof AdminBootstrapRoute
   '/admin/gemstones': typeof AdminGemstonesRoute
   '/admin/jewelry': typeof AdminJewelryRoute
@@ -189,7 +181,6 @@ export interface FileRoutesById {
   '/gemstones': typeof GemstonesRoute
   '/jewelry': typeof JewelryRoute
   '/wishlist': typeof WishlistRoute
-  '/admin/appointments': typeof AdminAppointmentsRoute
   '/admin/bootstrap': typeof AdminBootstrapRoute
   '/admin/gemstones': typeof AdminGemstonesRoute
   '/admin/jewelry': typeof AdminJewelryRoute
@@ -213,7 +204,6 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
-    | '/admin/appointments'
     | '/admin/bootstrap'
     | '/admin/gemstones'
     | '/admin/jewelry'
@@ -235,7 +225,6 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
-    | '/admin/appointments'
     | '/admin/bootstrap'
     | '/admin/gemstones'
     | '/admin/jewelry'
@@ -257,7 +246,6 @@ export interface FileRouteTypes {
     | '/gemstones'
     | '/jewelry'
     | '/wishlist'
-    | '/admin/appointments'
     | '/admin/bootstrap'
     | '/admin/gemstones'
     | '/admin/jewelry'
@@ -280,7 +268,6 @@ export interface RootRouteChildren {
   GemstonesRoute: typeof GemstonesRoute
   JewelryRoute: typeof JewelryRoute
   WishlistRoute: typeof WishlistRoute
-  AdminAppointmentsRoute: typeof AdminAppointmentsRoute
   AdminBootstrapRoute: typeof AdminBootstrapRoute
   AdminGemstonesRoute: typeof AdminGemstonesRoute
   AdminJewelryRoute: typeof AdminJewelryRoute
@@ -292,74 +279,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/wishlist': {
-      id: '/wishlist'
-      path: '/wishlist'
-      fullPath: '/wishlist'
-      preLoaderRoute: typeof WishlistRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/jewelry': {
-      id: '/jewelry'
-      path: '/jewelry'
-      fullPath: '/jewelry'
-      preLoaderRoute: typeof JewelryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/gemstones': {
-      id: '/gemstones'
-      path: '/gemstones'
-      fullPath: '/gemstones'
-      preLoaderRoute: typeof GemstonesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/collections': {
-      id: '/collections'
-      path: '/collections'
-      fullPath: '/collections'
-      preLoaderRoute: typeof CollectionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/checkout': {
-      id: '/checkout'
-      path: '/checkout'
-      fullPath: '/checkout'
-      preLoaderRoute: typeof CheckoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cart': {
-      id: '/cart'
-      path: '/cart'
-      fullPath: '/cart'
-      preLoaderRoute: typeof CartRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/appointment': {
-      id: '/appointment'
-      path: '/appointment'
-      fullPath: '/appointment'
-      preLoaderRoute: typeof AppointmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/account': {
-      id: '/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof AccountRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -369,11 +293,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/appointment': {
+      id: '/appointment'
+      path: '/appointment'
+      fullPath: '/appointment'
+      preLoaderRoute: typeof AppointmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/collections': {
+      id: '/collections'
+      path: '/collections'
+      fullPath: '/collections'
+      preLoaderRoute: typeof CollectionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gemstones': {
+      id: '/gemstones'
+      path: '/gemstones'
+      fullPath: '/gemstones'
+      preLoaderRoute: typeof GemstonesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jewelry': {
+      id: '/jewelry'
+      path: '/jewelry'
+      fullPath: '/jewelry'
+      preLoaderRoute: typeof JewelryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wishlist': {
+      id: '/wishlist'
+      path: '/wishlist'
+      fullPath: '/wishlist'
+      preLoaderRoute: typeof WishlistRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -383,32 +370,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/product/$id': {
-      id: '/product/$id'
-      path: '/product/$id'
-      fullPath: '/product/$id'
-      preLoaderRoute: typeof ProductIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/orders': {
-      id: '/admin/orders'
-      path: '/admin/orders'
-      fullPath: '/admin/orders'
-      preLoaderRoute: typeof AdminOrdersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/admin/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/jewelry': {
-      id: '/admin/jewelry'
-      path: '/admin/jewelry'
-      fullPath: '/admin/jewelry'
-      preLoaderRoute: typeof AdminJewelryRouteImport
+    '/admin/bootstrap': {
+      id: '/admin/bootstrap'
+      path: '/admin/bootstrap'
+      fullPath: '/admin/bootstrap'
+      preLoaderRoute: typeof AdminBootstrapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/gemstones': {
@@ -418,18 +384,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGemstonesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/bootstrap': {
-      id: '/admin/bootstrap'
-      path: '/admin/bootstrap'
-      fullPath: '/admin/bootstrap'
-      preLoaderRoute: typeof AdminBootstrapRouteImport
+    '/admin/jewelry': {
+      id: '/admin/jewelry'
+      path: '/admin/jewelry'
+      fullPath: '/admin/jewelry'
+      preLoaderRoute: typeof AdminJewelryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/appointments': {
-      id: '/admin/appointments'
-      path: '/admin/appointments'
-      fullPath: '/admin/appointments'
-      preLoaderRoute: typeof AdminAppointmentsRouteImport
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/orders': {
+      id: '/admin/orders'
+      path: '/admin/orders'
+      fullPath: '/admin/orders'
+      preLoaderRoute: typeof AdminOrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/product/$id': {
+      id: '/product/$id'
+      path: '/product/$id'
+      fullPath: '/product/$id'
+      preLoaderRoute: typeof ProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -448,7 +428,6 @@ const rootRouteChildren: RootRouteChildren = {
   GemstonesRoute: GemstonesRoute,
   JewelryRoute: JewelryRoute,
   WishlistRoute: WishlistRoute,
-  AdminAppointmentsRoute: AdminAppointmentsRoute,
   AdminBootstrapRoute: AdminBootstrapRoute,
   AdminGemstonesRoute: AdminGemstonesRoute,
   AdminJewelryRoute: AdminJewelryRoute,
@@ -460,3 +439,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

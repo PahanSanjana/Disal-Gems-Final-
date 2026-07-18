@@ -17,8 +17,8 @@ const NAV: { to: string; label: string; icon: any; exact?: boolean }[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/gemstones", label: "Gemstones", icon: Gem },
   { to: "/admin/jewelry", label: "Jewelry", icon: Sparkles },
-  { to: "/admin/orders", label: "Orders", icon: ShoppingBag },
-  { to: "/admin/appointments", label: "Appointments", icon: CalendarClock },
+  //{ to: "/admin/orders", label: "Orders", icon: ShoppingBag },
+  //{ to: "/admin/appointments", label: "Appointments", icon: CalendarClock },
 ];
 
 export function AdminGate({ children }: { children: ReactNode }) {
